@@ -1,0 +1,7 @@
+romkatv/powerlevel10k
+atuinsh/atuin
+zdharma-continuum/fast-syntax-highlighting
+zsh-users/zsh-autosuggestions
+Aloxaf/fzf-tab
+z-shell/zsh-eza
+fdellwing/zsh-bat
