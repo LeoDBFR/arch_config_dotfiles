@@ -1,0 +1,76 @@
+fastfetch
+export TERM=xterm
+#p10k
+        #p10k instant prompt init
+                if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+                  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+                fi
+
+        #p10k prompt
+                [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+#fzf options
+        # disable sort when completing `git checkout`
+                zstyle ':completion:*:git-checkout:*' sort false
+
+        # set descriptions format to enable group support
+        # NOTE: don't use escape sequences (like '%F{red}%d%f') here, fzf-tab will ignore them
+                zstyle ':completion:*:descriptions' format '[%d]'
+
+        # set list-colors to enable filename colorizing
+                zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+        # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+                zstyle ':completion:*' menu no
+
+        # preview directory's content with eza when completing cd, nano, ls
+                zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $real$path'
+                zstyle ':fzf-tab:complete:ls:*' fzf-preview 'eza -1 --color=always $realpath'
+                zstyle ':fzf-tab:complete:nano:*' fzf-preview 'eza -1 --color=always $realpath'
+                zstyle ':fzf-tab:complete:eza:*' fzf-preview 'eza -1 --color=always $realpath'
+                zstyle ':fzf-tab:complete:cat:*' fzf-preview 'eza -1 --color=always $realpath'
+                zstyle ':fzf-tab:complete:bat:*' fzf-preview 'eza -1 --color=always $realpath'
+
+        # To make fzf-tab follow FZF_DEFAULT_OPTS.
+        # NOTE: This may lead to unexpected behavior since some flags break this plugin. See Aloxaf/fzf-tab#455.
+                zstyle ':fzf-tab:*' use-fzf-default-opts yes
+
+        # switch group using `<` and `>`
+                zstyle ':fzf-tab:*' switch-group '<' '>'
+
+#customization
+        #show hidden files
+                _comp_options+=(globdots)
+
+        #make ls better
+                alias lss="eza --grid --all --all --icons=always --follow-symlinks --show-symlinks --group-directories-first --hyperlink"
+                alias lls="eza -l --all --all --icons=always --follow-symlinks --show-symlinks --group-directories-first --hyperlink -h -b"
+
+        #add normal cat
+                alias dat="cat --plain --paging=never --style plain"
+
+        #change color
+                ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=49'
+
+        #commands for fzf completion
+                export FZF_COMPLETION_DIR_COMMANDS="cd pushd rmdir tree nano ls eza cat bat"
+
+        #use ls colors
+                zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+#system options
+        #compinit
+                autoload -U compinit; compinit
+
+#antidote & atuin
+        #load antidote
+                source /usr/share/zsh-antidote/antidote.zsh
+
+        #load plugins
+                antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
+
+        #docker completions
+                #source <(docker completion zsh)
+
+        #pkgfile completions
+                source /usr/share/doc/pkgfile/command-not-found.zsh
